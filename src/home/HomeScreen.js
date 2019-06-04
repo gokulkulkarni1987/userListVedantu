@@ -12,6 +12,12 @@ import {
 
 class HomeScreen extends Component {
 
+  itemClicked(item) {
+    this.props.navigation.navigate('Details', {
+      item
+    })
+  }
+
   componentDidMount() {
     this.props.fetchUsers();
   }
