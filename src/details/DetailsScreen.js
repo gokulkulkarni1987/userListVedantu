@@ -1,8 +1,46 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { connect } from "react-redux";
 import { Card, Button, Icon } from 'react-native-elements';
 
 class DetailsScreen extends Component {
+
+  itemClicked(item) {
+    this.props.navigation.navigate('Details', {
+      item
+    })
+  }
+
+  onLikePress(item) {
+    
+  }
+
+  onDisLikePress(item) {
+
+  }
+
+  renderItem({ item }) {
+    let currentItem = this.props.navigation.getParam("item");
+    if (item.id === currentItem.id) {
+      return null;
+    }
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => this.itemClicked(item)}
+      >
+        <Card
+          title={item.title}
+          image={{
+            uri: item.thumbnailUrl
+          }}
+        />
+      </TouchableWithoutFeedback>
+    );
+  }
+
+  keyExtractor(item) {
+    return `item-${item.id}`;
+  }
 
   render() {
     let item = this.props.navigation.getParam("item");
@@ -17,7 +55,8 @@ class DetailsScreen extends Component {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-evenly',
+            marginTop: 10
           }}
         >
           <Button
@@ -29,6 +68,7 @@ class DetailsScreen extends Component {
               />
             }
             title="Like"
+            onPress={this.onLikePress(item)}
           />
 
           <Button
@@ -40,11 +80,22 @@ class DetailsScreen extends Component {
               />
             }
             title="Dis-Like"
+            onPress={this.onDisLikePress(item)}
           />
         </View>
+        <FlatList
+          data={this.props.users}
+          renderItem={this.renderItem.bind(this)}
+          keyExtractor={this.keyExtractor.bind(this)}
+        />
       </View>
     )
   }
 }
 
-export default DetailsScreen;
+const mapStateToProps = ({ users }) => {
+  return { ...users };
+};
+
+export default connect(mapStateToProps, {
+})(DetailsScreen);
