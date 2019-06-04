@@ -33,9 +33,6 @@ class DetailsScreen extends Component {
 
   renderItem({ item }) {
     let currentItem = this.props.navigation.getParam("item");
-    if (item.id === currentItem.id) {
-      return null;
-    }
     return (
       <TouchableWithoutFeedback
         onPress={() => this.itemClicked(item)}
@@ -57,6 +54,7 @@ class DetailsScreen extends Component {
   render() {
     let item = this.props.navigation.getParam("item");
     item = find(this.props.users, (user) => user.id === item.id);
+    console.log('this item called: ', item);
     this.refersh = !this.refersh;
     return (
       <View>
@@ -108,7 +106,7 @@ class DetailsScreen extends Component {
           />
         </View>
         <FlatList
-          data={this.props.users}
+          data={this.props.users.filter((user) => (user.id !== item.id))}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={this.keyExtractor.bind(this)}
           extraData={this.refersh}
