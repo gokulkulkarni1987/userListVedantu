@@ -21,7 +21,6 @@ export default (state = INITIAL_STATE, action) => {
       action.payload.likesCount = (action.payload.likesCount)? action.payload.likesCount + 1: 1;
       var index = findIndex(newState.users, (user) => user.id === action.payload.id);
       newState.users.splice(index, 1, action.payload );
-      newState.refresh = !newState.refresh;
       break;
     case "USER_DISLIKED":
       action.payload.dislikesCount = (action.payload.dislikesCount)? action.payload.dislikesCount + 1: 1;

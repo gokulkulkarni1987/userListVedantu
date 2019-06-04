@@ -15,20 +15,33 @@ class DetailsScreen extends Component {
   constructor(props) {
     super(props);
     this.refersh = true;
+    this.state = {
+      refreshComponent: true
+    };
   }
 
   itemClicked(item) {
     this.props.navigation.navigate('Details', {
       item
-    })
+    });
   }
 
   onLikePress(item) {
     this.props.userLiked(item);
+    setTimeout(() => {
+      this.setState({
+        refreshComponent: !this.state.refreshComponent
+      });
+    }, 10);
   }
 
   onDisLikePress(item) {
     this.props.userDisLiked(item);
+    setTimeout(() => {
+      this.setState({
+        refreshComponent: !this.state.refreshComponent
+      });
+    }, 10);
   }
 
   renderItem({ item }) {
@@ -116,8 +129,8 @@ class DetailsScreen extends Component {
   }
 }
 
-const mapStateToProps = ({ users, refresh }) => {
-  return { ...users, refresh };
+const mapStateToProps = ({ users }) => {
+  return { ...users };
 };
 
 export default connect(mapStateToProps, {
