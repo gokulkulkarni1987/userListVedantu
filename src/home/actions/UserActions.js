@@ -68,3 +68,21 @@ export const fetchUsers = () => {
     }, 10)
   };
 };
+
+export const userLiked = (user) => {
+  return dispatch => {
+    dispatch({
+      type: 'USER_LIKED',
+      payload: user
+    });
+  }
+}
+
+export const userDisLiked = (user) => {
+  return dispatch => {
+    dispatch({
+      type: 'USER_DISLIKED',
+      payload: user
+    });
+  }
+}

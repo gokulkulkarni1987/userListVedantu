@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { View, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { connect } from "react-redux";
-import { Card, Button, Icon } from 'react-native-elements';
+import { Card, Button, Icon, Text } from 'react-native-elements';
+import {
+  userDisLiked,
+  userLiked
+} from '../home/actions/UserActions';
 
 class DetailsScreen extends Component {
 
@@ -12,11 +16,11 @@ class DetailsScreen extends Component {
   }
 
   onLikePress(item) {
-    
+    this.props.userLiked(item);
   }
 
   onDisLikePress(item) {
-
+    this.props.userDisLiked(item);
   }
 
   renderItem({ item }) {
@@ -59,6 +63,16 @@ class DetailsScreen extends Component {
             marginTop: 10
           }}
         >
+          <Text>Likes: {item.likesCount}</Text>
+          <Text>DisLikes: {item.dislikesCount}</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            marginTop: 10
+          }}
+        >
           <Button
             icon={
               <Icon
@@ -68,7 +82,7 @@ class DetailsScreen extends Component {
               />
             }
             title="Like"
-            onPress={this.onLikePress(item)}
+            onPress={() => this.onLikePress(item)}
           />
 
           <Button
@@ -80,7 +94,7 @@ class DetailsScreen extends Component {
               />
             }
             title="Dis-Like"
-            onPress={this.onDisLikePress(item)}
+            onPress={() => this.onDisLikePress(item)}
           />
         </View>
         <FlatList
@@ -98,4 +112,6 @@ const mapStateToProps = ({ users }) => {
 };
 
 export default connect(mapStateToProps, {
+  userDisLiked,
+  userLiked
 })(DetailsScreen);
