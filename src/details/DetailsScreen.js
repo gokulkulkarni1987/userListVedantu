@@ -28,24 +28,13 @@ class DetailsScreen extends Component {
 
   onLikePress(item) {
     this.props.userLiked(item);
-    setTimeout(() => {
-      this.setState({
-        refreshComponent: !this.state.refreshComponent
-      });
-    }, 10);
   }
 
   onDisLikePress(item) {
     this.props.userDisLiked(item);
-    setTimeout(() => {
-      this.setState({
-        refreshComponent: !this.state.refreshComponent
-      });
-    }, 10);
   }
 
   renderItem({ item }) {
-    let currentItem = this.props.navigation.getParam("item");
     return (
       <TouchableWithoutFeedback
         onPress={() => this.itemClicked(item)}
@@ -67,7 +56,6 @@ class DetailsScreen extends Component {
   render() {
     let item = this.props.navigation.getParam("item");
     item = find(this.props.users, (user) => user.id === item.id);
-    console.log('this item called: ', item);
     this.refersh = !this.refersh;
     return (
       <View>
@@ -129,8 +117,8 @@ class DetailsScreen extends Component {
   }
 }
 
-const mapStateToProps = ({ users }) => {
-  return { ...users };
+const mapStateToProps = (items) => {
+  return { ...items.users };
 };
 
 export default connect(mapStateToProps, {

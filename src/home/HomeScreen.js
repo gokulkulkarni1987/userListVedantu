@@ -54,8 +54,9 @@ class HomeScreen extends Component {
   }
 }
 
-const mapStateToProps = ({ users }) => {
-  return { ...users };
+const mapStateToProps = (items) => {
+  console.log('console.log:', items);
+  return { ...items.users };
 };
 
 export default connect(mapStateToProps, {

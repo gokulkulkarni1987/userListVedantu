@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
+  console.log('yhis is the state: ', state);
   let newState = state;
   switch(action.type) {
     case "FETCH_USERS_SUCCESS":
@@ -18,14 +19,32 @@ export default (state = INITIAL_STATE, action) => {
       };
       break;
     case "USER_LIKED":
-      action.payload.likesCount = (action.payload.likesCount)? action.payload.likesCount + 1: 1;
-      var index = findIndex(newState.users, (user) => user.id === action.payload.id);
-      newState.users.splice(index, 1, action.payload );
+      let newUsers = newState.users.map((user) => {
+        if (user.id === action.payload.id) {
+          return Object.assign({}, user, {
+            likesCount: (user.likesCount)? user.likesCount + 1: 1
+          });
+        }
+        return user;
+      });
+      newState = {
+        ...newState,
+        users: newUsers
+      }
       break;
     case "USER_DISLIKED":
-      action.payload.dislikesCount = (action.payload.dislikesCount)? action.payload.dislikesCount + 1: 1;
-      var index = findIndex(newState.users, (user) => user.id === action.payload.id);
-      newState.users.splice(index, 1, action.payload );
+        let newUsersDislike = newState.users.map((user) => {
+          if (user.id === action.payload.id) {
+            return Object.assign({}, user, {
+              dislikesCount: (user.dislikesCount)? user.dislikesCount + 1: 1
+            });
+          }
+          return user;
+        });
+        newState = {
+          ...newState,
+          users: newUsersDislike
+        }
       break;
     default:
       newState = state;
