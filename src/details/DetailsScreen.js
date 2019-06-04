@@ -3,11 +3,19 @@ import { View, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { connect } from "react-redux";
 import { Card, Button, Icon, Text } from 'react-native-elements';
 import {
+  find
+} from 'lodash'
+import {
   userDisLiked,
   userLiked
 } from '../home/actions/UserActions';
 
 class DetailsScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    this.refersh = true;
+  }
 
   itemClicked(item) {
     this.props.navigation.navigate('Details', {
@@ -25,6 +33,8 @@ class DetailsScreen extends Component {
 
   renderItem({ item }) {
     let currentItem = this.props.navigation.getParam("item");
+    console.log('main item', currentItem.id);
+    console.log('cur item', item.id);
     if (item.id === currentItem.id) {
       return null;
     }
@@ -48,6 +58,9 @@ class DetailsScreen extends Component {
 
   render() {
     let item = this.props.navigation.getParam("item");
+    console.log('tis is called', item);
+    item = find(this.props.users, (user) => user.id === item.id);
+    this.refersh = !this.refersh;
     return (
       <View>
         <Card
@@ -63,8 +76,8 @@ class DetailsScreen extends Component {
             marginTop: 10
           }}
         >
-          <Text>Likes: {item.likesCount}</Text>
-          <Text>DisLikes: {item.dislikesCount}</Text>
+          <Text>Likes: {(item.likesCount) ? item.likesCount: 0}</Text>
+          <Text>DisLikes: {(item.dislikesCount) ? item.dislikesCount: 0}</Text>
         </View>
         <View
           style={{
@@ -101,14 +114,15 @@ class DetailsScreen extends Component {
           data={this.props.users}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={this.keyExtractor.bind(this)}
+          extraData={this.refersh}
         />
       </View>
     )
   }
 }
 
-const mapStateToProps = ({ users }) => {
-  return { ...users };
+const mapStateToProps = ({ users, refresh }) => {
+  return { ...users, refresh };
 };
 
 export default connect(mapStateToProps, {

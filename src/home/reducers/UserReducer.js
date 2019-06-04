@@ -1,15 +1,15 @@
 import {
-  forEach
+  forEach,
+  findIndex
 } from 'lodash';
 
 const INITIAL_STATE = {
-  users: []
+  users: [],
+  refresh: true
 };
 
 export default (state = INITIAL_STATE, action) => {
   let newState = state;
-  console.log('this is called', action);
-
   switch(action.type) {
     case "FETCH_USERS_SUCCESS":
       newState = {
@@ -18,20 +18,15 @@ export default (state = INITIAL_STATE, action) => {
       };
       break;
     case "USER_LIKED":
-        forEach(newState.users, (user) => {
-          if(user.id === action.payload.id) {
-            user.likesCount = (user.likesCount)? user.likesCount + 1: 1;
-            return;
-          }
-        });
+      action.payload.likesCount = (action.payload.likesCount)? action.payload.likesCount + 1: 1;
+      var index = findIndex(newState.users, (user) => user.id === action.payload.id);
+      newState.users.splice(index, 1, action.payload );
+      newState.refresh = !newState.refresh;
       break;
     case "USER_DISLIKED":
-      forEach(newState.users, (user) => {
-        if(user.id === action.payload.id) {
-          user.dislikesCount = (user.dislikesCount)? user.dislikesCount + 1: 1;
-          return;
-        }
-      });
+      action.payload.dislikesCount = (action.payload.dislikesCount)? action.payload.dislikesCount + 1: 1;
+      var index = findIndex(newState.users, (user) => user.id === action.payload.id);
+      newState.users.splice(index, 1, action.payload );
       break;
     default:
       newState = state;
