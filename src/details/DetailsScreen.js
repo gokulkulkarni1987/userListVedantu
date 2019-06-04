@@ -58,7 +58,6 @@ class DetailsScreen extends Component {
 
   render() {
     let item = this.props.navigation.getParam("item");
-    console.log('tis is called', item);
     item = find(this.props.users, (user) => user.id === item.id);
     this.refersh = !this.refersh;
     return (
