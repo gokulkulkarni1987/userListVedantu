@@ -33,8 +33,6 @@ class DetailsScreen extends Component {
 
   renderItem({ item }) {
     let currentItem = this.props.navigation.getParam("item");
-    console.log('main item', currentItem.id);
-    console.log('cur item', item.id);
     if (item.id === currentItem.id) {
       return null;
     }
