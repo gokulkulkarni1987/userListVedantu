@@ -9,7 +9,6 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  console.log('yhis is the state: ', state);
   let newState = state;
   switch(action.type) {
     case "FETCH_USERS_SUCCESS":
